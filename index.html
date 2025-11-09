@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Downloader</title>
+    <style>
+        /* Add some basic styling */
+        body { font-family: sans-serif; display: grid; place-content: center; height: 100vh; margin: 0; }
+        form { display: flex; flex-direction: column; gap: 10px; }
+        input { padding: 10px; font-size: 1rem; }
+        button { padding: 10px; font-size: 1rem; cursor: pointer; }
+        #message { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Submit a Video URL</h1>
+    <form id="downloadForm">
+        <input type="url" id="urlInput" placeholder="Paste a URL..." required>
+        <button type="submit">Download Video</button>
+    </form>
+    <p id="message"></p>
 
+    <script>
+        const form = document.getElementById('downloadForm');
+        const urlInput = document.getElementById('urlInput');
+        const messageEl = document.getElementById('message');
+        const webhookUrl = 'https://hook.eu1.make.com/o0ln1d2ozo04bb6iyylqnytoldqtire4';
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevents the default page reload
+
+            messageEl.textContent = 'Submitting...';
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ url: urlInput.value })
+            })
+            .then(response => {
+                if (response.ok) {
+                    messageEl.textContent = 'URL submitted successfully! Ready for the next one.';
+                    urlInput.value = ''; // Clears the input box
+                } else {
+                    throw new Error('Webhook call failed.');
+                }
+            })
+            .catch(error => {
+                messageEl.textContent = 'An error occurred. Please try again.';
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
