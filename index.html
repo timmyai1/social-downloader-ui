@@ -41,7 +41,7 @@
             })
             .then(response => {
                 if (response.ok) {
-                    messageEl.textContent = 'URL submitted successfully! Ready for the next one.';
+                    messageEl.textContent = 'URL submitted successfully! Paste a new URL.';
                     urlInput.value = ''; // Clears the input box
                 } else {
                     throw new Error('Webhook call failed.');
